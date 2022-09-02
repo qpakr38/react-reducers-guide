@@ -1,4 +1,4 @@
-import React, {useState, useReducer} from 'react';
+import React, {useState,useEffect, useReducer} from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
@@ -38,34 +38,36 @@ const Login = (props) => {
             isValid: undefined
         }
     );
+    const {isValid : emailIsValid} = emailState;
+    const {isValid : passwordIsValid} = passwordState;
 
-    // useEffect(() => {
-    //     const identifier=setTimeout(()=>{
-    //     console.log("Checking form validity!")
-    //         setFormIsValid(
-    //                 enteredEmail.includes('@') && enteredPassword.trim().length > 6
-    //             );
-    //         },500);
-    //     return ()=>{
-    //         console.log('Effect Clean Up!');
-    //         clearTimeout(identifier)
-    //     };
-    // }, [enteredEmail, enteredPassword]);
+    useEffect(() => {
+        const identifier=setTimeout(()=>{
+        console.log("Checking form validity!")
+            setFormIsValid(
+                emailIsValid &&  passwordIsValid
+                );
+            },500);
+        return ()=>{
+            console.log('Effect Clean Up!');
+            clearTimeout(identifier)
+        };
+    }, [emailIsValid, passwordIsValid]);
 
     const emailChangeHandler = (event) => {
         //setEnteredEmail(event.target.value);
         dispatchEmail({type: 'USER_INPUT', val: event.target.value});
-        setFormIsValid(
-            event.target.value.includes('@') && passwordState.isValid
-        );
+        // setFormIsValid(
+        //     event.target.value.includes('@') && passwordState.isValid
+        // );
     };
 
     const passwordChangeHandler = (event) => {
         //setEnteredPassword(event.target.value);
         dispatchPassword({type: 'USER_INPUT', val: event.target.value});
-        setFormIsValid(
-            event.target.value.trim().length > 6 && emailState.isValid
-        );
+        // setFormIsValid(
+        //     event.target.value.trim().length > 6 && emailState.isValid
+        // );
     };
 
     const validateEmailHandler = () => {
